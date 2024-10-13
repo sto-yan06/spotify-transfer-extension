@@ -1,16 +1,21 @@
 // Listener for the login button
-document.getElementById('login').addEventListener('click', function(){
+document.getElementById('login').addEventListener('click', function()
+{
     chrome.runtime.sendMessage({ action: 'login' });
 });
 
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === 'showSongs') {
+//Listener for diplaying the list
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => 
+    {
+    if (message.action === 'showSongs') 
+        {
         document.getElementById('content').style.display = 'block';
         document.getElementById('login').style.display = 'none';
         const songList = document.getElementById('songList');
         songList.innerHTML = ''; // Clear existing options
 
-        message.songs.forEach(song => {
+        message.songs.forEach(song => 
+            {
             const li = document.createElement('li');
             
             const checkbox = document.createElement('input');
@@ -28,12 +33,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-// Listen for messages from the background script
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message.action === 'showPlaylists') {
+// Listener for messages from the background script
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => 
+    {
+    if (message.action === 'showPlaylists') 
+        {
         const playlistSelect = document.getElementById('playlistSelect');
+        
         playlistSelect.innerHTML = ''; // Clear existing options
-        message.playlists.forEach(playlist => {
+
+        message.playlists.forEach(playlist => 
+            {
             const option = document.createElement('option');
             option.value = playlist.id; // Set option value to the Playlist ID
             option.textContent = playlist.name; // Display Playlist name
@@ -43,17 +53,20 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 });
 
 // Add event listener for "Select All" button
-document.getElementById('selectAll').addEventListener('click', function() {
+document.getElementById('selectAll').addEventListener('click', function() 
+{
     const checkboxes = document.querySelectorAll('#songList input[type="checkbox"]');
     const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
     
-    checkboxes.forEach(checkbox => {
+    checkboxes.forEach(checkbox => 
+        {
         checkbox.checked = !allChecked; // Toggle checkbox state
     });
 });
 
 // Listener for transferring songs to the selected playlist
-document.getElementById('transfer').addEventListener('click', function() {
+document.getElementById('transfer').addEventListener('click', function() 
+{
     const selectedSongs = Array.from(document.querySelectorAll('#songList input:checked'))
                                 .map(input => input.value);
     const playlist = document.getElementById('playlistSelect').value;

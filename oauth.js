@@ -3,7 +3,8 @@ const clientId = 'bb4af864adc84d7b955d70be0577a8ee';
 const scopes = ['user-library-read', 'playlist-modify-public', 'playlist-modify-private', 'playlist-read-private'];
 
 // Function to build the Spotify Authentication URL
-export function getSpotifyAuthUrl() {
+export function getSpotifyAuthUrl() 
+{
     const redirectUri = chrome.identity.getRedirectURL();
     const authUrl = new URL('https://accounts.spotify.com/authorize');
     authUrl.searchParams.set('client_id', clientId);
@@ -57,7 +58,8 @@ function saveToken(token)
 }
 
 // Function to launch Spotify login (initiated by background.js)
-export function initiateSpotifyLogin() {
+export function initiateSpotifyLogin() 
+{
     const authUrl = getSpotifyAuthUrl(); // Build the authorization URL with required scopes
     chrome.identity.launchWebAuthFlow({
         url: authUrl,

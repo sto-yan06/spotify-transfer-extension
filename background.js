@@ -1,7 +1,8 @@
 import { extractAccessToken, getSpotifyAuthUrl } from './oauth.js';
 
 // Listener for messages from popup.js or other parts of the extension
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => 
+    {
     if (message.action === 'login') {
         initateSpotifyLogin(); // Start the Spotify login (OAuth2) flow when the user clicks 'Login'
     } else if (message.action === 'transferSongs') {
@@ -11,7 +12,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
 });
 
-async function validateToken(token) {
+async function validateToken(token) 
+{
     try {
         const response = await fetch('https://api.spotify.com/v1/me', {
             headers: {
@@ -27,7 +29,8 @@ async function validateToken(token) {
     }
 }
 
-async function initateSpotifyLogin() {
+async function initateSpotifyLogin() 
+{
     chrome.storage.sync.get('token', async (data) => {
         if (data.token) {
             // Validate token before proceeding
@@ -46,7 +49,8 @@ async function initateSpotifyLogin() {
     });
 }
 
-function startSpotifyAuthFlow() {
+function startSpotifyAuthFlow() 
+{
     const authURL = getSpotifyAuthUrl(); // Build the authorization URL 
     chrome.identity.launchWebAuthFlow(
         {
@@ -99,7 +103,8 @@ function fetchLikedSongs(token)
             }
             return response.json();
         })
-        .then(data => {
+        .then(data => 
+            {
             console.log("API Response: ", data);
 
             // Check if 'items' is defined
@@ -109,7 +114,8 @@ function fetchLikedSongs(token)
             }
 
             // Map and add new songs to the array
-            const newSongs = data.items.map(item => ({
+            const newSongs = data.items.map(item => 
+                ({
                 id: item.track.id,
                 name: item.track.name,
                 artist: item.track.artists[0].name
@@ -126,7 +132,8 @@ function fetchLikedSongs(token)
                 // All pages fetched, send all songs to the popup
                 chrome.runtime.sendMessage({ action: 'showSongs', songs });
             }
-        }).catch(err => {
+        }).catch(err => 
+            {
             console.error('Error fetching songs: ', err);
         });
     };
@@ -140,7 +147,8 @@ function transferSongs(token, songs, playlistId, newPlaylistName)
     if(newPlaylistName)
     {
         // If user opted to create a new playlist for the liked songs
-        createNewPlaylist(token, newPlaylistName).then(newPlaylistId =>{
+        createNewPlaylist(token, newPlaylistName).then(newPlaylistId =>
+            {
             addSongsToPlaylist(token, newPlaylistId, songs);
         });
     } else
@@ -171,44 +179,57 @@ function createNewPlaylist(token, name)
 }
 
 //Helper function to add songs to an existing or new playlist
-function addSongsToPlaylist(token, playlistId, songs) {
+function addSongsToPlaylist(token, playlistId, songs) 
+{
     const trackUris = songs.map(songId => `spotify:track:${songId}`); // Map the URI of the current song
     const addTracksUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks`; // Get the track's URL
 
     // Function to fetch the existing tracks in the playlist
-    const fetchExistingTracks = () => {
+    const fetchExistingTracks = () => 
+        {
         let existingTracks = [];
         let apiUrl = `https://api.spotify.com/v1/playlists/${playlistId}/tracks?limit=100`; // Get the first 100 tracks
 
-        const fetchTracksPage = () => {
-            fetch(apiUrl, {
-                headers: {
+        const fetchTracksPage = () => 
+            {
+            fetch(apiUrl, 
+                {
+                headers: 
+                {
                     'Authorization': 'Bearer ' + token,
                 },
             })
-            .then(response => {
-                if (!response.ok) {
+            .then(response => 
+                {
+                if (!response.ok) 
+                    {
                     console.error(`Error fetching existing tracks: ${response.status} ${response.statusText}`);
-                    return response.json().then(err => {
+                    return response.json().then(err => 
+                        {
                         console.error("Error details:", err);
                         throw new Error(`API error: ${err.error.message}`);
                     });
                 }
                 return response.json();
             })
-            .then(data => {
+            .then(data => 
+                {
                 existingTracks = existingTracks.concat(data.items.map(item => item.track.id)); // Collect track IDs
 
                 // If there's a next page, fetch it
-                if (data.next) {
+                if (data.next) 
+                    {
                     apiUrl = data.next; // Set apiUrl to the next page URL
                     fetchTracksPage(); // Fetch the next page
-                } else {
+                } else 
+                {
                     // After fetching all existing tracks, proceed to add new tracks
                     const uniqueTracks = trackUris.filter(uri => !existingTracks.includes(uri.split(':')[2])); // Filter out existing tracks
-                    if (uniqueTracks.length > 0) {
+                    if (uniqueTracks.length > 0) 
+                        {
                         addTracksToPlaylistInChunks(uniqueTracks); // Add only unique tracks
-                    } else {
+                    } else 
+                    {
                         console.log("No new unique tracks to add.");
                         chrome.runtime.sendMessage({
                             action: 'transferComplete'
@@ -216,7 +237,8 @@ function addSongsToPlaylist(token, playlistId, songs) {
                     }
                 }
             })
-            .catch(err => {
+            .catch(err => 
+                {
                 console.error('Error fetching existing tracks: ', err);
             });
         };
@@ -225,17 +247,20 @@ function addSongsToPlaylist(token, playlistId, songs) {
     };
 
     // Function to add tracks in chunks to the playlist
-    const addTracksToPlaylistInChunks = (uniqueTracks) => {
+    const addTracksToPlaylistInChunks = (uniqueTracks) => 
+        {
         const chunkSize = 100; // Spotify API limit
         const chunks = [];
 
         // Break the unique tracks into chunks of 100
-        for (let i = 0; i < uniqueTracks.length; i += chunkSize) {
+        for (let i = 0; i < uniqueTracks.length; i += chunkSize) 
+            {
             chunks.push(uniqueTracks.slice(i, i + chunkSize));
         }
 
         // Function to add tracks in chunks
-        const addTracksInChunks = (chunkIndex) => {
+        const addTracksInChunks = (chunkIndex) => 
+            {
             if (chunkIndex >= chunks.length) {
                 console.log("All unique songs transferred successfully!");
                 chrome.runtime.sendMessage({
@@ -245,26 +270,31 @@ function addSongsToPlaylist(token, playlistId, songs) {
             }
 
             // Fetching the data as a POST request and add it to the existing/new playlist
-            fetch(addTracksUrl, {
+            fetch(addTracksUrl, 
+                {
                 method: 'POST',
-                headers: {
+                headers: 
+                {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ uris: chunks[chunkIndex] })
             })
-            .then(response => {
+            .then(response => 
+                {
                 if (response.ok) {
                     console.log(`Chunk ${chunkIndex + 1} of unique tracks transferred successfully!`);
                     addTracksInChunks(chunkIndex + 1); // Transfer the next chunk
-                } else {
+                } else 
+                {
                     // Log the status and error message
                     return response.json().then(err => {
                         console.error('Error transferring unique songs: ', response.status, response.statusText, err.error.message);
                     });
                 }
             })
-            .catch(err => {
+            .catch(err => 
+                {
                 console.error('Network error transferring unique songs: ', err);
             });
         };
@@ -278,34 +308,43 @@ function addSongsToPlaylist(token, playlistId, songs) {
 }
 
 // Function to get all the user's playlists:
-function fetchUserPlaylist(token) {
+function fetchUserPlaylist(token) 
+{
     let playlists = [];
     let apiUrl = 'https://api.spotify.com/v1/me/playlists?limit=50';
 
     const fetchPlaylists = () => {
-        fetch(apiUrl, {
-            headers: {
+        fetch(apiUrl, 
+            {
+            headers: 
+            {
                 'Authorization': 'Bearer ' + token.trim()
             }
         })
-        .then(response => {
-            if (!response.ok) {
+        .then(response => 
+            {
+            if (!response.ok) 
+                {
                 console.error(`Error fetching playlists: ${response.status} ${response.statusText}`);
-                return response.json().then(err => {
+                return response.json().then(err => 
+                    {
                     console.error("Error details:", err);
                     throw new Error(`API error: ${err.error.message}`);
                 });
             }
             return response.json();
         })
-        .then(data => {
+        .then(data => 
+            {
             playlists = playlists.concat(data.items); // Combine the playlists from this response
 
             // If there's a next page, fetch it
-            if (data.next) {
+            if (data.next) 
+                {
                 apiUrl = data.next; // Set apiUrl to the next page URL
                 fetchPlaylists(); // Fetch the next page
-            } else {
+            } else 
+            {
                 // No more pages, send all playlists to the popup
                 chrome.runtime.sendMessage({ action: 'showPlaylists', playlists: playlists.map(item => ({
                     id: item.id,
@@ -313,7 +352,8 @@ function fetchUserPlaylist(token) {
                 })) }); // Send all fetched playlists
             }
         })
-        .catch(err => {
+        .catch(err => 
+            {
             console.error('Error fetching playlists: ', err);
         });
     };
