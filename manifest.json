@@ -25,7 +25,7 @@
       "128": "assets/icon128.png"
     },
     "oauth2": {
-      "client_id": "bb4af864adc84d7b955d70be0577a8ee",
+      "client_id": "your own client id",
       "scopes": ["user-library-read", "playlist-modify-public", "playlist-modify-private", "playlist-read-private"]
     },
     "host_permissions": [
