@@ -1,5 +1,5 @@
 // Spotify OAuth details
-const clientId = 'bb4af864adc84d7b955d70be0577a8ee';
+const clientId = 'your own cliend id';
 const scopes = ['user-library-read', 'playlist-modify-public', 'playlist-modify-private', 'playlist-read-private'];
 
 // Function to build the Spotify Authentication URL
