@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Spotify Transfer</title>
+</head>
+<body>
+    <div id="main">
+        <h1>Spotify Transfer</h1>
+        <button id="login">Login with Spotify</button>
+        <div id="content" style="display: none;">
+            <h2>Liked Songs</h2>
+            <button id="selectAll">Select All</button>
+            <ul id="songList"></ul>
+            <div>
+                <label for="playlistSelect">Select Playlist:</label>
+                <select id="playlistSelect"></select>
+                <input type="text" id="newPlaylistName" placeholder="New Playlist Name">
+                <button id="transfer">Transfer Selected Songs</button>
+            </div>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>

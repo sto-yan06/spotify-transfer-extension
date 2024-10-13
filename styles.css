@@ -1,0 +1,96 @@
+/* Reset some default styles */
+body, h1, h2, button, select, input {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif; /* Change this to any font you prefer */
+}
+
+/* Set the background color and text color */
+body {
+    background-color: #191414; /* Dark background */
+    color: #ffffff; /* White text */
+}
+
+/* Main container styling */
+#main {
+    max-width: 600px; /* Limit the width */
+    margin: 50px auto; /* Center the main div */
+    padding: 20px;
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+    background-color: #121212; /* Slightly lighter than the body */
+}
+
+/* Heading styles */
+h1 {
+    font-size: 2.5rem; /* Larger font for main heading */
+    color: #1db954; /* Spotify green */
+    text-align: center;
+}
+
+h2 {
+    font-size: 1.5rem; /* Subheading size */
+    margin-top: 20px;
+    color: #1db954; /* Spotify green */
+    text-align: left;
+}
+
+/* Button styles */
+button {
+    background-color: #1db954; /* Spotify green */
+    color: #ffffff; /* White text */
+    border: none;
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Padding for buttons */
+    font-size: 1rem; /* Button font size */
+    cursor: pointer; /* Pointer on hover */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+button:hover {
+    background-color: #1aa34a; /* Darker green on hover */
+}
+
+/* Select and input styling */
+select, input[type="text"] {
+    width: 100%; /* Full width */
+    padding: 10px; /* Padding */
+    border: 1px solid #1db954; /* Border matching theme */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #282828; /* Dark background for inputs */
+    color: #ffffff; /* White text */
+    margin-top: 10px; /* Spacing */
+    margin-bottom: 20px; /* Spacing */
+}
+
+/* Input focus style */
+input:focus, select:focus {
+    outline: none; /* Remove outline */
+    border-color: #1aa34a; /* Change border color on focus */
+}
+
+/* List styles */
+ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove padding */
+}
+
+li {
+    padding: 10px 0; /* Spacing between items */
+    border-bottom: 1px solid #444; /* Bottom border for items */
+}
+
+/* Additional styles for list items with checkboxes */
+li {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    padding: 10px 0; /* Spacing between items */
+    border-bottom: 1px solid #444; /* Bottom border for items */
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+    margin-right: 5px; /* Space between checkbox and text */
+    transform: scale(1.2); /* Optionally increase checkbox size */
+    cursor: pointer; /* Pointer on hover */
+}

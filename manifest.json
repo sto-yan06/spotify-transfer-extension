@@ -1,0 +1,37 @@
+{
+    "manifest_version": 3,
+    "name": "Spotify Transfer",
+    "version": "1.0",
+    "description": "Transfer liked songs from Spotify to your playlists.",
+    "permissions": [
+      "storage", 
+      "identity"
+    ],
+    "background": {
+      "service_worker": "background.js",
+      "type": "module"
+    },
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
+      }
+    },
+    "icons": {
+      "16": "assets/icon16.png",
+      "48": "assets/icon48.png",
+      "128": "assets/icon128.png"
+    },
+    "oauth2": {
+      "client_id": "bb4af864adc84d7b955d70be0577a8ee",
+      "scopes": ["user-library-read", "playlist-modify-public", "playlist-modify-private", "playlist-read-private"]
+    },
+    "host_permissions": [
+    "https://accounts.spotify.com/authorize",
+    "https://accounts.spotify.com/api/token",
+    "https://api.spotify.com/v1/*"
+]
+  }
+  
